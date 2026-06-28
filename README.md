@@ -1,36 +1,66 @@
-# 🛡️ Sentinel AI
+# 🛡️ FuseDock
 
-![Sentinel AI Banner](https://via.placeholder.com/1200x400/0a0a0a/00d4ff?text=Sentinel+AI+-+Next+Gen+SOC+Triage)
+<div align="center">
+  <p><strong>Next-Generation SOC Triage & Threat Intelligence Workspace</strong></p>
+  
+  ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+  ![Vite](https://img.shields.io/badge/Vite-B73BFE?style=for-the-badge&logo=vite&logoColor=FFD62E)
+  ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+  ![Groq](https://img.shields.io/badge/Groq-f55036?style=for-the-badge&logo=groq&logoColor=white)
+  ![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)
+</div>
 
-**Sentinel AI** is a blazing-fast, frontend-only cybersecurity triage workspace designed for modern Security Operations Centers (SOC). It empowers security analysts to instantly analyze suspicious emails, URLs, scripts, logs, and raw text to extract actionable threat intelligence.
+FuseDock is a blazing-fast, frontend-only cybersecurity triage workspace designed for modern Security Operations Centers (SOC). It empowers security analysts to instantly analyze suspicious emails, URLs, scripts, logs, and raw text to extract actionable threat intelligence.
 
-Powered by **Llama 3.3 70B** via the **Groq API**, Sentinel AI delivers near-instantaneous, structured JSON threat assessments—bypassing the need for complex backend infrastructure.
+---
+
+## ❓ Why FuseDock?
+
+Security analysts are overwhelmed by alert fatigue and the manual process of parsing through suspicious artifacts. **FuseDock** solves this by:
+- Eliminating the need for complex backend integrations for threat triage.
+- Providing near-instantaneous analysis utilizing Llama 3 via Groq's high-speed inference.
+- Structuring raw, unstructured threat data into a guaranteed, predictable JSON schema.
+- Keeping analysis 100% client-side, ensuring that sensitive data isn't stored in persistent databases.
 
 ---
 
 ## ✨ Features
 
-- **⚡ Lightning Fast AI Inference**: Utilizes Groq's LPU architecture and Llama 3 to analyze threats in milliseconds.
-- **🎯 Precision JSON Parsing**: The AI is strictly engineered to output guaranteed JSON schemas for seamless frontend integration.
-- **🎨 Premium Enterprise Dashboard**: A dark-mode, glassmorphism UI inspired by CrowdStrike and Microsoft Defender.
-- **📊 Comprehensive Threat Metrics**:
-  - Threat Severity Scoring (0-10)
-  - Extracted Indicators of Compromise (IOCs)
-  - MITRE ATT&CK Technique Mapping
-  - Actionable Mitigation Steps
-  - Executive SOC Summaries
-- **🔒 100% Client-Side**: No backend, no database, no authentication. Analysis happens entirely between your browser and the Groq API. Your data is not stored locally or on a server.
+| Feature | Description |
+| :--- | :--- |
+| **⚡ Ultra-Fast Inference** | Powered by Groq's LPU architecture, delivering real-time AI threat analysis. |
+| **🎯 Structured Data** | AI output is strictly engineered to return precise JSON schemas. |
+| **🎨 Premium UI/UX** | Dark-mode, glassmorphism dashboard inspired by enterprise SOC tools. |
+| **📊 Threat Metrics** | Generates 0-10 severity scores, MITRE ATT&CK mapping, and IOC extraction. |
+| **🔒 100% Client-Side** | Zero backend or database; analysis occurs purely between the browser and Groq API. |
+
+---
+
+## 🏗️ Architecture
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant FuseDock UI
+    participant Groq API (Llama 3)
+    
+    User->>FuseDock UI: Pastes Suspicious Payload
+    FuseDock UI->>FuseDock UI: Formats payload & System Prompt
+    FuseDock UI->>Groq API (Llama 3): POST /chat/completions (Strict JSON Mode)
+    Groq API (Llama 3)-->>FuseDock UI: Returns structured JSON Threat Assessment
+    FuseDock UI->>User: Renders Metrics, IOCs, and MITRE Mapping
+```
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **Framework**: [React 18](https://react.dev/) with [Vite](https://vitejs.dev/)
+FuseDock is built with a modern, lightweight, and performant stack:
+- **Core**: [React 18](https://react.dev/) + [Vite](https://vitejs.dev/)
 - **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
-- **Animations**: [Framer Motion](https://www.framer.com/motion/)
+- **Animation**: [Framer Motion](https://www.framer.com/motion/)
 - **Icons**: [Lucide React](https://lucide.dev/)
-- **AI / LLM**: [Groq API](https://console.groq.com/) (Llama 3.3 70B Versatile)
-- **Deployment**: Ready for Vercel / Netlify / GitHub Pages
+- **Intelligence**: [Groq API](https://console.groq.com/) (Llama 3.3 70B Versatile)
 
 ---
 
@@ -38,36 +68,33 @@ Powered by **Llama 3.3 70B** via the **Groq API**, Sentinel AI delivers near-ins
 
 ### Prerequisites
 
-You will need [Node.js](https://nodejs.org/) installed and a free API key from [Groq](https://console.groq.com/keys).
+- [Node.js](https://nodejs.org/) installed
+- A free API key from [Groq](https://console.groq.com/keys)
 
-### 1. Clone the repository
+### Installation
 
-```bash
-git clone https://github.com/yourusername/sentinel-ai.git
-cd sentinel-ai
-```
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/yourusername/fusedock.git
+   cd fusedock
+   ```
 
-### 2. Install dependencies
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-```bash
-npm install
-```
+3. **Configure Environment Variables**
+   Create a `.env` file in the root of the project and add your Groq API key:
+   ```env
+   VITE_GROQ_API_KEY=gsk_your_groq_api_key_here
+   ```
 
-### 3. Configure Environment Variables
-
-Create a `.env` file in the root of the project (if it doesn't already exist) and add your Groq API key:
-
-```env
-VITE_GROQ_API_KEY=gsk_your_groq_api_key_here
-```
-
-### 4. Run the Development Server
-
-```bash
-npm run dev
-```
-
-The application will be available at `http://localhost:5174`.
+4. **Run the Development Server**
+   ```bash
+   npm run dev
+   ```
+   *The application will be available at `http://localhost:5174`.*
 
 ---
 
@@ -76,52 +103,33 @@ The application will be available at `http://localhost:5174`.
 ```text
 src/
 ├── components/
-│   ├── layout/       # Navbar, Sidebar, Footer wrappers
-│   ├── input/        # Content entry, sample selectors
-│   ├── results/      # Threat score, IOC grids, MITRE cards
+│   ├── layout/       # Navigation, sidebar, and wrappers
+│   ├── input/        # Content entry and sample payload selectors
+│   ├── results/      # Threat metrics, IOC grids, and MITRE cards
 │   └── ui/           # Reusable micro-components (Loaders, Toasts)
 ├── hooks/
-│   └── useGeminiAnalysis.js  # Main AI orchestration hook (Handles Groq retries)
+│   └── useGeminiAnalysis.js  # Main AI orchestration & retry logic
 ├── services/
-│   └── geminiService.js      # Native fetch wrapper for Groq API with 429 backoff
+│   └── geminiService.js      # Groq API integration (native fetch + backoff)
 ├── utils/
-│   └── constants.js          # Sample threat data and loading messages
-├── App.jsx                   # Main application shell
-└── index.css                 # Tailwind entry and custom glassmorphism utilities
-```
-
----
-
-## 🧠 AI Prompt Engineering
-
-The system uses a highly constrained system prompt to force Llama 3 into a strict SOC Analyst persona. It guarantees output in the following JSON schema:
-
-```json
-{
-  "threatScore": 8,
-  "severity": "High",
-  "threatType": "Phishing",
-  "summary": "...",
-  "iocs": ["malicious-domain.com"],
-  "mitre": "T1566.002 - Spearphishing Link",
-  "mitigation": ["Block domain at firewall", "Reset user credentials"],
-  "socReport": "...",
-  "simpleExplanation": "..."
-}
+│   └── constants.js          # Static threat data and animations
+├── App.jsx                   # Application shell
+└── index.css                 # Tailwind entry and glassmorphism utilities
 ```
 
 ---
 
 ## ☁️ Deployment
 
-Since Sentinel AI is a purely frontend application, it can be deployed directly to Vercel with zero configuration:
+FuseDock is a static frontend application, making it effortlessly deployable:
 
-1. Push your code to GitHub.
-2. Import the repository into [Vercel](https://vercel.com/).
-3. Add `VITE_GROQ_API_KEY` to your Vercel Environment Variables.
-4. Click **Deploy**.
+1. Push your repository to GitHub.
+2. Import the project into a platform like [Vercel](https://vercel.com/) or Netlify.
+3. Add `VITE_GROQ_API_KEY` to the platform's Environment Variables.
+4. Deploy.
 
-*(Note: Because the API call happens in the browser, your Groq API key will be exposed in the client bundle. For strict production environments, you should proxy the request through a serverless function.)*
+> [!WARNING]
+> Because the API call happens in the browser, your Groq API key is exposed in the client bundle. For strict production environments, proxy the request through a serverless function.
 
 ---
 
