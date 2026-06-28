@@ -24,14 +24,17 @@ FuseDock is a blazing-fast, frontend-only cybersecurity triage workspace designe
 
 ## 📸 Application Preview
 
-### Homepage
-![Homepage](./assets/homepage.png)
+### 🏠 Landing Page
+<img src="./assets/landing-page.png" width="600" alt="Landing Page" />
 
-### Threat Assessment
-![Threat Assessment](./assets/threat-assessment.png)
+### 🔍 Threat Assessment
+<img src="./assets/homepage.png" width="600" alt="Threat Assessment" />
 
-### Intelligence Report
-![Intelligence Report](./assets/intelligence-report.png)
+### 📊 Intelligence Report
+<img src="./assets/threat-assessment.png" width="600" alt="Intelligence Report" />
+
+### 📄 Executive SOC Report
+<img src="./assets/intelligence-report.png" width="600" alt="Executive SOC Report" />
 
 ---
 
