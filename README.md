@@ -10,7 +10,28 @@
   ![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)
 </div>
 
+## 🔗 Live Demo
+
+**[https://fuse-dock.vercel.app/](https://fuse-dock.vercel.app/)**
+
+## 📂 Repository
+
+**[https://github.com/dakshpandey2102/fuseDock](https://github.com/dakshpandey2102/fuseDock)**
+
 FuseDock is a blazing-fast, frontend-only cybersecurity triage workspace designed for modern Security Operations Centers (SOC). It empowers security analysts to instantly analyze suspicious emails, URLs, scripts, logs, and raw text to extract actionable threat intelligence.
+
+---
+
+## 📸 Application Preview
+
+### Homepage
+![Homepage](./assets/homepage.png)
+
+### Threat Assessment
+![Threat Assessment](./assets/threat-assessment.png)
+
+### Intelligence Report
+![Intelligence Report](./assets/intelligence-report.png)
 
 ---
 
@@ -75,8 +96,8 @@ FuseDock is built with a modern, lightweight, and performant stack:
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/fusedock.git
-   cd fusedock
+   git clone https://github.com/dakshpandey2102/fuseDock.git
+   cd fuseDock
    ```
 
 2. **Install dependencies**
