@@ -1,0 +1,133 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-cyber-bg text-cyber-text font-sans antialiased;
+    background-image: 
+      radial-gradient(ellipse at 20% 50%, rgba(0, 212, 255, 0.04) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, rgba(124, 58, 237, 0.04) 0%, transparent 50%);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #0a0e17;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #1e2d3d;
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #00d4ff33;
+  }
+
+  ::selection {
+    background: rgba(0, 212, 255, 0.25);
+    color: #e2e8f0;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-white/[0.04] backdrop-blur-sm border border-white/[0.08] rounded-xl shadow-card;
+    background-image: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
+  }
+
+  .cyber-btn {
+    @apply relative overflow-hidden font-semibold transition-all duration-300;
+  }
+
+  .cyber-btn::before {
+    content: '';
+    @apply absolute inset-0 opacity-0 transition-opacity duration-300;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+  }
+
+  .cyber-btn:hover::before {
+    @apply opacity-100;
+  }
+
+  .severity-critical {
+    @apply text-red-400 bg-red-400/10 border-red-400/30;
+  }
+
+  .severity-high {
+    @apply text-orange-400 bg-orange-400/10 border-orange-400/30;
+  }
+
+  .severity-medium {
+    @apply text-yellow-400 bg-yellow-400/10 border-yellow-400/30;
+  }
+
+  .severity-low {
+    @apply text-green-400 bg-green-400/10 border-green-400/30;
+  }
+
+  .severity-info {
+    @apply text-blue-400 bg-blue-400/10 border-blue-400/30;
+  }
+
+  .grid-pattern {
+    background-image: 
+      linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+  }
+}
+
+@layer utilities {
+  .text-gradient-blue {
+    background: linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-gradient-red {
+    background: linear-gradient(135deg, #ff4444 0%, #ff8800 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .border-gradient {
+    border-image: linear-gradient(135deg, #00d4ff33, #7c3aed33) 1;
+  }
+
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes glow {
+    from { box-shadow: 0 0 10px rgba(0,212,255,0.2); }
+    to { box-shadow: 0 0 30px rgba(0,212,255,0.4), 0 0 60px rgba(0,212,255,0.1); }
+  }
+
+  .animate-scan-line {
+    animation: scanLine 4s linear infinite;
+  }
+
+  @keyframes scanLine {
+    0% { top: -2px; opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { top: 100%; opacity: 0; }
+  }
+}
