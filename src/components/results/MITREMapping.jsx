@@ -1,54 +1,46 @@
-import { motion } from 'framer-motion';
-import { ExternalLink, GitBranch } from 'lucide-react';
+import { Target, ExternalLink } from 'lucide-react';
 import ResultCard from './ResultCard';
-import { MITRE_BASE_URL } from '../../utils/constants';
 
 export default function MITREMapping({ mitre }) {
-  if (!mitre) return null;
+  if (!mitre || mitre === 'Unknown') {
+    return (
+      <ResultCard title="MITRE ATT&CK Mapping" icon={Target}>
+        <div className="flex flex-col items-center justify-center h-full text-[#666] py-6">
+          <Target size={24} className="mb-2 opacity-50" />
+          <p className="text-xs">No specific technique identified</p>
+        </div>
+      </ResultCard>
+    );
+  }
 
-  // Parse "T1566.001 - Spearphishing Attachment" format
-  const match = mitre.match(/^(T\d{4}(?:\.\d{3})?)\s*[-–]\s*(.+)$/);
-  const techniqueId = match?.[1] || null;
-  const techniqueName = match?.[2] || mitre;
-
-  const url = techniqueId
-    ? `${MITRE_BASE_URL}${techniqueId.replace('.', '/')}/`
-    : 'https://attack.mitre.org/';
+  // Parse T-code
+  const tCodeMatch = mitre.match(/(T\d{4}(?:\.\d{3})?)/);
+  const tCode = tCodeMatch ? tCodeMatch[1] : null;
 
   return (
-    <ResultCard title="MITRE ATT&CK" icon={GitBranch} glow="blue">
-      <motion.a
-        href={url}
-        target="_blank"
-        rel="noopener noreferrer"
-        initial={{ opacity: 0, y: 8 }}
-        animate={{ opacity: 1, y: 0 }}
-        whileHover={{ scale: 1.01 }}
-        className="group flex items-start gap-4 p-4 rounded-lg border border-cyan-500/20 bg-cyan-500/5 hover:border-cyan-500/40 hover:bg-cyan-500/10 transition-all duration-200"
-      >
-        {/* Technique ID badge */}
-        <div className="flex-shrink-0">
-          {techniqueId ? (
-            <div className="px-2.5 py-1.5 rounded-md bg-cyan-400/10 border border-cyan-400/30 text-center">
-              <span className="font-mono text-sm font-bold text-cyan-300 whitespace-nowrap">{techniqueId}</span>
-            </div>
-          ) : (
-            <div className="w-10 h-10 rounded-md bg-cyan-400/10 border border-cyan-400/20 flex items-center justify-center">
-              <GitBranch size={16} className="text-cyan-400" />
-            </div>
-          )}
-        </div>
-
-        {/* Details */}
-        <div className="flex-1 min-w-0">
-          <p className="text-sm font-semibold text-gray-200 group-hover:text-white transition-colors">
-            {techniqueName}
-          </p>
-          <p className="text-xs text-gray-500 mt-1 font-mono">MITRE ATT&CK Enterprise</p>
-        </div>
-
-        <ExternalLink size={14} className="text-gray-600 group-hover:text-cyan-400 transition-colors flex-shrink-0 mt-0.5" />
-      </motion.a>
+    <ResultCard title="MITRE ATT&CK Mapping" icon={Target}>
+      <div className="flex flex-col justify-center h-full">
+        {tCode && (
+          <div className="inline-block px-2 py-0.5 rounded bg-[rgba(255,255,255,0.05)] text-[#a1a1aa] font-mono text-[11px] mb-2 self-start border border-[rgba(255,255,255,0.1)]">
+            {tCode}
+          </div>
+        )}
+        <p className="text-sm text-[#ededed] leading-relaxed mb-3">
+          {mitre}
+        </p>
+        
+        {tCode && (
+          <a
+            href={`https://attack.mitre.org/techniques/${tCode.split('.')[0]}/${tCode.includes('.') ? tCode.split('.')[1] : ''}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 text-[11px] text-[#666] hover:text-[#ededed] transition-colors self-start underline underline-offset-2"
+          >
+            View on MITRE
+            <ExternalLink size={10} />
+          </a>
+        )}
+      </div>
     </ResultCard>
   );
 }

@@ -1,75 +1,70 @@
 import { motion } from 'framer-motion';
-import { Shield, Zap, Lock, Eye, Server, GitBranch } from 'lucide-react';
+import { ArrowRight, GitBranch } from 'lucide-react';
 
-const stats = [
-  { icon: Eye, label: 'Threat Types', value: '50+' },
-  { icon: GitBranch, label: 'MITRE Techniques', value: '200+' },
-  { icon: Zap, label: 'Avg Analysis', value: '<3s' },
-  { icon: Lock, label: 'Data Stored', value: 'Zero' },
-];
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1, delayChildren: 0.1 },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } },
+};
 
 export default function Hero() {
+  const scrollToWorkspace = () => {
+    document.getElementById('workspace')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
-    <section className="relative pt-32 pb-16 overflow-hidden grid-pattern">
-      {/* Background decorations */}
-      <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full opacity-20 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse, rgba(0,212,255,0.15) 0%, transparent 70%)' }} />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+    <section className="relative pt-32 pb-24 overflow-hidden flex flex-col items-center justify-center min-h-[70vh]">
+      {/* Vercel-style background glows */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-pink-600/20 blur-[100px] rounded-full pointer-events-none" />
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
         <div className="text-center max-w-4xl mx-auto">
-          {/* Badge */}
+          
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-cyan-500/20 bg-cyan-500/5 mb-8"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-            <span className="text-xs font-mono text-cyan-400 tracking-widest uppercase">AI-Powered SOC Analyst</span>
-          </motion.div>
+            <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.1)] text-[#a1a1aa] text-xs font-mono mb-8 backdrop-blur-md">
+              <span className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_10px_rgba(59,130,246,0.8)]" />
+              Intelligence Engine Active
+            </motion.div>
+            
+            <motion.h1 variants={itemVariants} className="text-6xl sm:text-7xl lg:text-[90px] font-bold tracking-tighter text-[#ededed] mb-8 leading-[1.05]">
+              Analyze Threats <br className="hidden sm:block" />
+              <span className="text-transparent bg-clip-text bg-gradient-to-b from-[#fff] to-[#666]">In Seconds.</span>
+            </motion.h1>
+            
+            <motion.p variants={itemVariants} className="text-lg sm:text-xl text-[#a1a1aa] mb-12 max-w-2xl mx-auto font-normal leading-relaxed tracking-tight">
+              The zero-backend cybersecurity triage workspace. Instantly process suspicious emails, scripts, and logs with absolute precision.
+            </motion.p>
 
-          {/* Heading */}
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-5xl sm:text-6xl lg:text-7xl font-black mb-6 leading-tight tracking-tight"
-          >
-            <span className="text-white">Analyze Threats</span>
-            <br />
-            <span className="text-gradient-blue">In Seconds</span>
-          </motion.h1>
-
-          {/* Subheading */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-lg text-gray-400 max-w-2xl mx-auto leading-relaxed mb-10"
-          >
-            Paste suspicious{' '}
-            <span className="text-cyan-400 font-medium">emails, URLs, scripts,</span> or{' '}
-            <span className="text-cyan-400 font-medium">logs</span> and get an expert-level
-            security assessment with MITRE ATT&CK mapping, IOC extraction, and a professional SOC report — instantly.
-          </motion.p>
-
-          {/* Stats */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.35 }}
-            className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl mx-auto"
-          >
-            {stats.map(({ icon: Icon, label, value }) => (
-              <div
-                key={label}
-                className="glass-card p-4 text-center rounded-xl"
+            <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <button 
+                onClick={scrollToWorkspace}
+                className="vercel-btn-white w-full sm:w-auto h-12 text-base px-8"
               >
-                <Icon size={16} className="text-cyan-500 mx-auto mb-2" />
-                <div className="text-xl font-bold text-white mb-0.5">{value}</div>
-                <div className="text-xs text-gray-500">{label}</div>
-              </div>
-            ))}
+                Start Analysis
+                <ArrowRight size={16} />
+              </button>
+              
+              <a 
+                href="https://github.com/dakshpandey2102/fuseDock"
+                target="_blank"
+                rel="noreferrer"
+                className="vercel-btn-glass w-full sm:w-auto h-12 text-base px-8"
+              >
+                <GitBranch size={16} />
+                View Repository
+              </a>
+            </motion.div>
           </motion.div>
         </div>
       </div>

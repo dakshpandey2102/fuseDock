@@ -1,13 +1,11 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Toaster } from 'react-hot-toast';
-import { AlertCircle, RotateCcw, Shield, Cpu, Tag, FileSearch } from 'lucide-react';
+import { AlertCircle, RotateCcw, Shield, Cpu, Tag, Target } from 'lucide-react';
 
 // Layout
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
-
-// Sections
 import Hero from './components/Hero';
 
 // Input
@@ -23,11 +21,8 @@ import IOCList from './components/results/IOCList';
 import MITREMapping from './components/results/MITREMapping';
 import MitigationList from './components/results/MitigationList';
 import SOCReport from './components/results/SOCReport';
-import ResultCard from './components/results/ResultCard';
-
-// UI
-import LoadingMessages from './components/ui/LoadingMessages';
 import GlassCard from './components/ui/GlassCard';
+import LoadingMessages from './components/ui/LoadingMessages';
 
 // Hook
 import { useGeminiAnalysis } from './hooks/useGeminiAnalysis';
@@ -41,8 +36,8 @@ const containerVariants = {
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
+  hidden: { opacity: 0, y: 10 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } },
 };
 
 export default function App() {
@@ -66,87 +61,106 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-cyber-bg">
+    <div className="min-h-screen bg-black flex flex-col font-sans text-[#ededed]">
       <Toaster
-        position="top-right"
+        position="top-center"
         toastOptions={{
           style: {
-            background: '#0f1623',
-            color: '#e2e8f0',
-            border: '1px solid rgba(255,255,255,0.08)',
-            borderRadius: '10px',
-            fontSize: '14px',
+            background: '#000',
+            color: '#ededed',
+            border: '1px solid rgba(255,255,255,0.1)',
+            borderRadius: '8px',
+            fontSize: '13px',
           },
         }}
       />
 
       <Navbar />
-      <Hero />
+      
+      {!result && !isLoading && <Hero />}
 
-      {/* Main workspace */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
-        {/* Input section */}
+      <main className="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative">
+        {/* Subtle background glow for workspace */}
+        {!result && (
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-blue-600/10 blur-[100px] rounded-full pointer-events-none" />
+        )}
+
+        {/* Input Section */}
         <motion.section
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
           id="workspace"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="mb-12 relative z-10"
         >
-          <GlassCard className="p-6 mb-8">
-            {/* Section title */}
-            <div className="flex items-center gap-2 mb-5">
-              <div className="w-7 h-7 rounded-md bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center">
-                <FileSearch size={14} className="text-cyan-400" />
+          <div className="max-w-3xl mx-auto">
+            <div className="flex flex-col gap-8">
+              
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-md bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] flex items-center justify-center">
+                  <Target size={14} className="text-[#ededed]" />
+                </div>
+                <div>
+                  <h2 className="text-base font-semibold text-[#ededed] tracking-tight">Threat Assessment</h2>
+                  <p className="text-xs text-[#a1a1aa]">Provide payload or artifact for analysis.</p>
+                </div>
               </div>
-              <h2 className="text-sm font-semibold text-gray-200 uppercase tracking-widest font-mono">
-                Threat Input
-              </h2>
+
+              <div className="space-y-6">
+                <div>
+                  <label className="block text-[11px] text-[#666] font-mono mb-2 uppercase tracking-widest">
+                    Type
+                  </label>
+                  <ContentTypeSelector selected={contentType} onChange={setContentType} />
+                </div>
+
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="block text-[11px] text-[#666] font-mono uppercase tracking-widest">
+                      Payload
+                    </label>
+                    <SampleInputs onSelect={handleSampleSelect} />
+                  </div>
+                  <TextInputArea value={inputText} onChange={setInputText} contentType={contentType} />
+                </div>
+
+                <AnimatePresence>
+                  {error && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="overflow-hidden"
+                    >
+                      <div className="flex items-start gap-3 p-3 rounded-md border border-red-500/20 bg-red-500/10 mt-2">
+                        <AlertCircle size={14} className="text-red-500 flex-shrink-0 mt-0.5" />
+                        <p className="text-xs text-red-500">{error}</p>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                <div className="pt-2">
+                  <AnalyzeButton onClick={handleAnalyze} isLoading={isLoading} disabled={!inputText.trim()} />
+                </div>
+              </div>
+
             </div>
-
-            {/* Content type selector */}
-            <div className="mb-4">
-              <label className="block text-xs text-gray-500 font-mono mb-2 uppercase tracking-wider">
-                Content Type
-              </label>
-              <ContentTypeSelector selected={contentType} onChange={setContentType} />
-            </div>
-
-            {/* Sample inputs */}
-            <div className="mb-4">
-              <SampleInputs onSelect={handleSampleSelect} />
-            </div>
-
-            {/* Textarea */}
-            <div className="mb-5">
-              <label className="block text-xs text-gray-500 font-mono mb-2 uppercase tracking-wider">
-                Paste Content
-              </label>
-              <TextInputArea value={inputText} onChange={setInputText} contentType={contentType} />
-            </div>
-
-            {/* Error message */}
-            <AnimatePresence>
-              {error && (
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  className="flex items-start gap-3 p-4 rounded-lg border border-red-500/30 bg-red-500/10 mb-4"
-                >
-                  <AlertCircle size={16} className="text-red-400 flex-shrink-0 mt-0.5" />
-                  <p className="text-sm text-red-300">{error}</p>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            {/* Analyze button */}
-            <AnalyzeButton onClick={handleAnalyze} isLoading={isLoading} disabled={!inputText.trim()} />
-          </GlassCard>
+          </div>
         </motion.section>
 
         {/* Loading */}
         <AnimatePresence>
-          {isLoading && <LoadingMessages isVisible={isLoading} retryInfo={retryInfo} />}
+          {isLoading && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="py-12"
+            >
+              <LoadingMessages isVisible={isLoading} retryInfo={retryInfo} />
+            </motion.div>
+          )}
         </AnimatePresence>
 
         {/* Results */}
@@ -157,72 +171,69 @@ export default function App() {
               variants={containerVariants}
               initial="hidden"
               animate="visible"
-              exit={{ opacity: 0, y: 20 }}
-              className="space-y-6"
+              exit={{ opacity: 0, y: 10 }}
+              className="space-y-4 pt-4"
             >
-              {/* Results header */}
-              <motion.div
-                variants={itemVariants}
-                className="flex items-center justify-between"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center">
-                    <Shield size={16} className="text-cyan-400" />
+              {/* Header */}
+              <motion.div variants={itemVariants} className="flex items-center justify-between mb-8 pb-8 border-b border-[rgba(255,255,255,0.1)]">
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-lg bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] flex items-center justify-center">
+                    <Shield size={20} className="text-[#ededed]" />
                   </div>
                   <div>
-                    <h2 className="text-lg font-bold text-white">Analysis Complete</h2>
-                    <p className="text-xs text-gray-500 font-mono">Threat intelligence report generated</p>
+                    <h2 className="text-xl font-bold text-[#ededed] tracking-tight">Intelligence Report</h2>
+                    <p className="text-[13px] text-[#a1a1aa]">Analysis completed successfully.</p>
                   </div>
                 </div>
                 <button
                   onClick={handleReset}
-                  className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-gray-400 hover:text-white border border-white/10 hover:border-white/20 hover:bg-white/5 transition-all duration-200"
+                  className="vercel-btn-glass text-xs h-9 px-4"
                 >
                   <RotateCcw size={14} />
-                  New Analysis
+                  New Scan
                 </button>
               </motion.div>
 
-              {/* Overview row: Gauge + Summary */}
-              <motion.div variants={itemVariants} className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {/* Gauge */}
-                <GlassCard className="p-6 flex flex-col items-center justify-center" glow={
-                  result.severity === 'Critical' ? 'red' :
-                  result.severity === 'High' ? 'orange' :
-                  result.severity === 'Low' ? 'green' : 'blue'
-                }>
-                  <ThreatScoreGauge score={result.threatScore} severity={result.severity} />
-                </GlassCard>
+              {/* Top Row: Gauge + Summary */}
+              <motion.div variants={itemVariants} className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                <div className="lg:col-span-1">
+                  <GlassCard className="p-6 h-full flex flex-col items-center justify-center">
+                    <ThreatScoreGauge score={result.threatScore} severity={result.severity} />
+                  </GlassCard>
+                </div>
 
-                {/* Summary */}
-                <GlassCard className="p-6 lg:col-span-2">
-                  <div className="flex items-start justify-between gap-4 mb-4">
-                    <div>
-                      <div className="flex items-center gap-2 mb-2">
-                        <Cpu size={14} className="text-cyan-500" />
-                        <span className="text-xs font-mono text-gray-500 uppercase tracking-wider">Threat Classification</span>
+                <div className="lg:col-span-2">
+                  <GlassCard className="p-8 h-full flex flex-col justify-center">
+                    <div className="flex items-center justify-between gap-4 mb-6">
+                      <div>
+                        <div className="flex items-center gap-2 mb-2 text-[#a1a1aa]">
+                          <Cpu size={14} />
+                          <span className="text-[10px] font-mono uppercase tracking-widest">Classification</span>
+                        </div>
+                        <h3 className="text-2xl font-bold text-[#ededed] tracking-tight">{result.threatType}</h3>
                       </div>
-                      <h3 className="text-xl font-bold text-white">{result.threatType}</h3>
+                      <SeverityBadge severity={result.severity} size="lg" />
                     </div>
-                    <SeverityBadge severity={result.severity} size="md" />
-                  </div>
 
-                  <div className="w-full h-px bg-white/[0.06] mb-4" />
+                    <div className="w-full h-px bg-[rgba(255,255,255,0.1)] mb-6" />
 
-                  <div className="flex items-start gap-2">
-                    <Tag size={13} className="text-gray-500 mt-0.5 flex-shrink-0" />
-                    <p className="text-sm text-gray-300 leading-relaxed">{result.summary}</p>
-                  </div>
-                </GlassCard>
+                    <div className="flex items-start gap-3">
+                      <Tag size={14} className="text-[#666] mt-1 flex-shrink-0" />
+                      <p className="text-[14px] text-[#a1a1aa] leading-relaxed">
+                        {result.summary}
+                      </p>
+                    </div>
+                  </GlassCard>
+                </div>
               </motion.div>
 
-              {/* MITRE + IOC row */}
-              <motion.div variants={itemVariants} className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* MITRE + IOC */}
+              <motion.div variants={itemVariants} className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <MITREMapping mitre={result.mitre} />
                 <IOCList iocs={result.iocs} />
               </motion.div>
 
-              {/* Mitigation */}
+              {/* Mitigations */}
               <motion.div variants={itemVariants}>
                 <MitigationList mitigation={result.mitigation} />
               </motion.div>
@@ -232,15 +243,6 @@ export default function App() {
                 <SOCReport socReport={result.socReport} simpleExplanation={result.simpleExplanation} />
               </motion.div>
 
-              {/* Disclaimer */}
-              <motion.div variants={itemVariants}>
-                <div className="flex items-start gap-2 p-4 rounded-lg border border-yellow-500/10 bg-yellow-500/5">
-                  <AlertCircle size={14} className="text-yellow-500 flex-shrink-0 mt-0.5" />
-                  <p className="text-xs text-gray-500">
-                    <span className="text-yellow-500/80 font-medium">AI Disclaimer:</span> This analysis is AI-generated and intended to assist, not replace, professional security review. Always validate findings with your security team before taking action.
-                  </p>
-                </div>
-              </motion.div>
             </motion.section>
           )}
         </AnimatePresence>

@@ -3,131 +3,131 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --bg-dark: #000000;
+    --border-soft: #333333;
+    --vercel-white: #ededed;
+    --vercel-gray: #a1a1aa;
+    --vercel-blue: #0070f3;
+  }
+
   *, *::before, *::after {
     box-sizing: border-box;
   }
 
   html {
     scroll-behavior: smooth;
+    background-color: var(--bg-dark);
   }
 
   body {
-    @apply bg-cyber-bg text-cyber-text font-sans antialiased;
-    background-image: 
-      radial-gradient(ellipse at 20% 50%, rgba(0, 212, 255, 0.04) 0%, transparent 50%),
-      radial-gradient(ellipse at 80% 20%, rgba(124, 58, 237, 0.04) 0%, transparent 50%);
+    @apply font-sans antialiased;
+    background-color: var(--bg-dark);
+    color: var(--vercel-gray);
     min-height: 100vh;
     overflow-x: hidden;
+  }
+
+  /* Typography */
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-[#ededed] tracking-tight;
   }
 
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
   }
-
   ::-webkit-scrollbar-track {
-    background: #0a0e17;
+    background: transparent;
   }
-
   ::-webkit-scrollbar-thumb {
-    background: #1e2d3d;
+    background: #333;
     border-radius: 3px;
   }
-
   ::-webkit-scrollbar-thumb:hover {
-    background: #00d4ff33;
+    background: #666;
   }
-
   ::selection {
-    background: rgba(0, 212, 255, 0.25);
-    color: #e2e8f0;
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
   }
 }
 
 @layer components {
+  /* Vercel-style Glass Card */
   .glass-card {
-    @apply bg-white/[0.04] backdrop-blur-sm border border-white/[0.08] rounded-xl shadow-card;
-    background-image: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
+    @apply bg-black/60 backdrop-blur-2xl border rounded-xl transition-all duration-300;
+    border-color: rgba(255,255,255,0.1);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  }
+  
+  .glass-card:hover {
+    border-color: rgba(255,255,255,0.2);
   }
 
-  .cyber-btn {
-    @apply relative overflow-hidden font-semibold transition-all duration-300;
+  /* Solid Vercel White Button */
+  .vercel-btn-white {
+    @apply bg-[#ededed] hover:bg-white text-black font-medium text-sm rounded-md px-6 py-2.5 transition-colors duration-200 flex items-center justify-center gap-2;
   }
 
-  .cyber-btn::before {
-    content: '';
-    @apply absolute inset-0 opacity-0 transition-opacity duration-300;
-    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+  /* Glassy Vercel Button */
+  .vercel-btn-glass {
+    @apply bg-white/[0.03] hover:bg-white/[0.08] text-[#ededed] font-medium text-sm rounded-md px-6 py-2.5 transition-all duration-200 flex items-center justify-center gap-2;
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
   }
 
-  .cyber-btn:hover::before {
-    @apply opacity-100;
+  .vercel-btn-glass:active, .vercel-btn-white:active {
+    transform: scale(0.97);
   }
 
+  /* Minimal Severity Overrides */
   .severity-critical {
-    @apply text-red-400 bg-red-400/10 border-red-400/30;
+    @apply text-red-500 bg-red-500/10 border border-red-500/20;
   }
-
   .severity-high {
-    @apply text-orange-400 bg-orange-400/10 border-orange-400/30;
+    @apply text-orange-500 bg-orange-500/10 border border-orange-500/20;
   }
-
   .severity-medium {
-    @apply text-yellow-400 bg-yellow-400/10 border-yellow-400/30;
+    @apply text-yellow-500 bg-yellow-500/10 border border-yellow-500/20;
   }
-
   .severity-low {
-    @apply text-green-400 bg-green-400/10 border-green-400/30;
+    @apply text-emerald-500 bg-emerald-500/10 border border-emerald-500/20;
   }
-
   .severity-info {
-    @apply text-blue-400 bg-blue-400/10 border-blue-400/30;
+    @apply text-blue-500 bg-blue-500/10 border border-blue-500/20;
   }
 
   .grid-pattern {
     background-image: 
-      linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
-    background-size: 50px 50px;
+      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
   }
 }
 
 @layer utilities {
-  .text-gradient-blue {
-    background: linear-gradient(135deg, #00d4ff 0%, #7c3aed 100%);
+  .text-gradient-vercel {
+    background: linear-gradient(180deg, #fff 0%, #a1a1aa 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
-  .text-gradient-red {
-    background: linear-gradient(135deg, #ff4444 0%, #ff8800 100%);
+  .text-gradient-conic {
+    background: conic-gradient(from 180deg at 50% 50%, #2a8af6 0deg, #a853ba 180deg, #e92a67 360deg);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
-  .border-gradient {
-    border-image: linear-gradient(135deg, #00d4ff33, #7c3aed33) 1;
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
   }
 
-  .animate-glow {
-    animation: glow 2s ease-in-out infinite alternate;
-  }
-
-  @keyframes glow {
-    from { box-shadow: 0 0 10px rgba(0,212,255,0.2); }
-    to { box-shadow: 0 0 30px rgba(0,212,255,0.4), 0 0 60px rgba(0,212,255,0.1); }
-  }
-
-  .animate-scan-line {
-    animation: scanLine 4s linear infinite;
-  }
-
-  @keyframes scanLine {
-    0% { top: -2px; opacity: 0; }
-    10% { opacity: 1; }
-    90% { opacity: 1; }
-    100% { top: 100%; opacity: 0; }
+  @keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+    100% { transform: translateY(0px); }
   }
 }

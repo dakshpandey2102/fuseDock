@@ -1,22 +1,27 @@
-import { SEVERITY_CONFIG } from '../../utils/constants';
+import { motion } from 'framer-motion';
 
-export default function SeverityBadge({ severity, size = 'md' }) {
-  const config = SEVERITY_CONFIG[severity] || SEVERITY_CONFIG.Info;
-  const sizes = {
-    sm: 'px-2 py-0.5 text-xs',
-    md: 'px-3 py-1 text-sm',
-    lg: 'px-4 py-1.5 text-base',
+export default function SeverityBadge({ severity, size = 'sm' }) {
+  const classes = {
+    Critical: 'severity-critical',
+    High: 'severity-high',
+    Medium: 'severity-medium',
+    Low: 'severity-low',
+    Info: 'severity-info',
+  };
+
+  const sizeClasses = {
+    sm: 'px-2 py-0.5 text-[10px]',
+    md: 'px-2.5 py-1 text-[11px]',
+    lg: 'px-3 py-1.5 text-xs',
   };
 
   return (
-    <span
-      className={`inline-flex items-center gap-1.5 rounded-full border font-semibold ${config.textClass} ${config.bgClass} ${config.borderClass} ${sizes[size]}`}
+    <motion.span
+      initial={{ scale: 0.9, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      className={`inline-flex items-center justify-center rounded-[4px] font-mono uppercase tracking-widest ${classes[severity] || classes.Info} ${sizeClasses[size]}`}
     >
-      <span
-        className="w-1.5 h-1.5 rounded-full animate-pulse"
-        style={{ backgroundColor: config.color }}
-      />
       {severity}
-    </span>
+    </motion.span>
   );
 }

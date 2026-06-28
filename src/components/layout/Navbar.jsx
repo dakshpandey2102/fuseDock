@@ -1,57 +1,52 @@
-import { motion, AnimatePresence } from 'framer-motion';
-import { Shield, GitBranch, Zap } from 'lucide-react';
+import { Shield, GitBranch, Activity } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export default function Navbar() {
   return (
-    <motion.nav
-      initial={{ y: -80, opacity: 0 }}
+    <motion.nav 
+      initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: 'easeOut' }}
-      className="fixed top-0 left-0 right-0 z-50 border-b border-white/[0.06]"
-      style={{
-        background: 'rgba(10, 14, 23, 0.85)',
-        backdropFilter: 'blur(20px)',
-      }}
+      className="sticky top-0 z-50 border-b border-[rgba(255,255,255,0.1)] bg-black/50 backdrop-blur-2xl"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <div className="flex items-center gap-3">
-            <div className="relative">
-              <div className="w-9 h-9 rounded-lg flex items-center justify-center"
-                style={{ background: 'linear-gradient(135deg, rgba(0,212,255,0.2), rgba(124,58,237,0.2))', border: '1px solid rgba(0,212,255,0.3)' }}>
-                <Shield size={18} className="text-cyan-400" />
+        <div className="flex items-center justify-between h-14">
+          
+          {/* Logo & Status */}
+          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-2">
+              <div className="w-6 h-6 flex items-center justify-center">
+                <Shield size={20} className="text-[#ededed]" />
               </div>
-              <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-green-400 rounded-full border-2 border-cyber-bg animate-pulse" />
+              <span className="text-base font-bold text-[#ededed] tracking-tight">FuseDock</span>
             </div>
-            <div>
-              <span className="font-bold text-lg tracking-tight text-gradient-blue">Sentinel AI</span>
-              <p className="text-[10px] text-gray-500 leading-none tracking-widest uppercase font-mono">Cyber Triage</p>
+            
+            <div className="hidden sm:flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-[rgba(255,255,255,0.03)] border border-[rgba(255,255,255,0.1)]">
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+              </span>
+              <span className="text-[11px] font-medium text-[#a1a1aa] uppercase tracking-wider">Online</span>
             </div>
           </div>
 
-          {/* Center badge */}
-          <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full border border-green-500/20 bg-green-500/5">
-            <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-            <span className="text-xs text-green-400 font-mono">SOC ANALYST ONLINE</span>
-          </div>
-
-          {/* Right actions */}
-          <div className="flex items-center gap-3">
-            <div className="hidden sm:flex items-center gap-1.5 text-xs text-gray-500 font-mono">
-              <Zap size={12} className="text-cyan-500" />
-              <span>Powered by Groq</span>
+          {/* Right Section */}
+          <div className="flex items-center gap-4">
+            <div className="hidden sm:flex items-center gap-2 px-2 py-1">
+              <Activity size={12} className="text-[#a1a1aa]" />
+              <span className="text-[11px] font-mono text-[#a1a1aa]">Llama 3 (Groq)</span>
             </div>
+            
             <a
-              href="https://github.com"
+              href="https://github.com/dakshpandey2102/fuseDock"
               target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm text-gray-400 hover:text-white border border-white/10 hover:border-white/20 transition-all duration-200 hover:bg-white/5"
+              rel="noreferrer"
+              className="vercel-btn-glass text-[13px] px-4 py-1.5 h-8 rounded-full"
             >
-              <GitBranch size={15} />
+              <GitBranch size={14} />
               <span className="hidden sm:inline">GitHub</span>
             </a>
           </div>
+          
         </div>
       </div>
     </motion.nav>

@@ -1,36 +1,24 @@
-import { motion } from 'framer-motion';
-import { ShieldCheck, CheckCircle } from 'lucide-react';
+import { ShieldCheck } from 'lucide-react';
 import ResultCard from './ResultCard';
 
 export default function MitigationList({ mitigation }) {
-  if (!mitigation?.length) {
-    return (
-      <ResultCard title="Mitigation Steps" icon={ShieldCheck}>
-        <p className="text-sm text-gray-500 italic">No mitigation steps available.</p>
-      </ResultCard>
-    );
-  }
+  if (!mitigation || mitigation.length === 0) return null;
 
   return (
-    <ResultCard title="Mitigation Steps" icon={ShieldCheck} glow="green">
-      <ol className="space-y-3">
-        {mitigation.map((step, i) => (
-          <motion.li
-            key={i}
-            initial={{ opacity: 0, x: -15 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: i * 0.08, ease: 'easeOut' }}
-            className="flex items-start gap-3 group"
+    <ResultCard title="Recommended Mitigation" icon={ShieldCheck}>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {mitigation.map((step, idx) => (
+          <div
+            key={idx}
+            className="flex items-start gap-3"
           >
-            <div className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-green-400 border border-green-400/30 bg-green-400/10 mt-0.5">
-              {i + 1}
+            <div className="w-5 h-5 rounded flex items-center justify-center shrink-0 mt-0.5 bg-[rgba(255,255,255,0.05)] border border-[rgba(255,255,255,0.1)] text-[#a1a1aa]">
+              <span className="text-[10px] font-mono">{idx + 1}</span>
             </div>
-            <p className="text-sm text-gray-300 leading-relaxed group-hover:text-gray-100 transition-colors">
-              {step}
-            </p>
-          </motion.li>
+            <p className="text-[13px] text-[#a1a1aa] leading-relaxed">{step}</p>
+          </div>
         ))}
-      </ol>
+      </div>
     </ResultCard>
   );
 }

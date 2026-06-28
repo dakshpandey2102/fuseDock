@@ -1,21 +1,22 @@
-import { Shield, Zap } from 'lucide-react';
+import { Shield } from 'lucide-react';
 
 export default function Footer() {
   return (
-    <footer className="border-t border-white/[0.06] py-8 mt-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2 text-gray-500">
-            <Shield size={14} className="text-cyan-500/50" />
-            <span className="text-sm font-mono">Sentinel AI</span>
-            <span className="text-xs">— AI-powered cybersecurity triage</span>
+    <footer className="border-t border-[rgba(255,255,255,0.1)] bg-black mt-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+          
+          <div className="flex items-center gap-2 text-[#a1a1aa]">
+            <Shield size={16} />
+            <span className="text-sm">© 2026 FuseDock Inc.</span>
           </div>
-          <div className="flex items-center gap-1.5 text-xs text-gray-600 font-mono">
-            <Zap size={10} className="text-cyan-600" />
-            <span>Built with Llama 3 on Groq</span>
-            <span className="mx-2 text-gray-700">·</span>
-            <span>No data stored, all analysis is client-side</span>
+
+          <div className="flex items-center gap-4">
+            <span className="text-sm text-[#a1a1aa] hover:text-[#ededed] transition-colors cursor-pointer">Powered by Groq</span>
+            <div className="w-1 h-1 rounded-full bg-[rgba(255,255,255,0.2)]"></div>
+            <span className="text-sm text-[#a1a1aa] hover:text-[#ededed] transition-colors cursor-pointer">Client-Side Analysis</span>
           </div>
+          
         </div>
       </div>
     </footer>

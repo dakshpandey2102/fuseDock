@@ -15,19 +15,18 @@ export default function ContentTypeSelector({ selected, onChange }) {
             key={type.id}
             id={`content-type-${type.id}`}
             onClick={() => onChange(type.id)}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+            whileTap={{ scale: 0.97 }}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.05 }}
             title={type.description}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium border transition-all duration-200 ${
+            className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 border ${
               isSelected
-                ? 'bg-cyan-500/15 text-cyan-300 border-cyan-500/40 shadow-glow-blue'
-                : 'bg-white/[0.03] text-gray-400 border-white/10 hover:border-white/20 hover:text-gray-200 hover:bg-white/[0.06]'
+                ? 'bg-[#ededed] text-black border-[#ededed]'
+                : 'bg-transparent text-[#a1a1aa] border-[rgba(255,255,255,0.1)] hover:border-[rgba(255,255,255,0.2)] hover:text-[#ededed]'
             }`}
           >
-            <Icon size={14} />
+            <Icon size={14} className={isSelected ? 'text-black' : 'text-[#a1a1aa]'} />
             {type.label}
           </motion.button>
         );
