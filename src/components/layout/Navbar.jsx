@@ -33,7 +33,7 @@ export default function Navbar() {
           <div className="flex items-center gap-4">
             <div className="hidden sm:flex items-center gap-2 px-2 py-1">
               <Activity size={12} className="text-[#a1a1aa]" />
-              <span className="text-[11px] font-mono text-[#a1a1aa]">Llama 3 (Groq)</span>
+              <span className="text-[11px] font-mono text-[#a1a1aa]">Gemini 3.1 Flash Lite</span>
             </div>
             
             <a

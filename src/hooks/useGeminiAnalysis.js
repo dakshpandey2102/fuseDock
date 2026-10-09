@@ -2,12 +2,12 @@ import { useState, useCallback, useRef } from 'react';
 import { analyzeContent } from '../services/geminiService';
 
 const ERROR_MESSAGES = {
-  'GROQ_API_KEY_MISSING':   '🔑 API Key Missing — Add your VITE_GROQ_API_KEY to the .env file and restart the dev server.',
+  'GEMINI_API_KEY_MISSING': '🔑 API Key Missing — Add your VITE_GEMINI_API_KEY to the .env file and restart the dev server.',
   'EMPTY_RESPONSE':         '⚠️ The AI returned an empty response. Please try again.',
   'PARSE_ERROR':            '⚠️ Could not parse the AI response. Please try again.',
   'INVALID_SCHEMA':         '⚠️ AI returned an unexpected format. Please try again.',
   'API_ERROR_400':          '❌ Bad request — the input may be too large or contain unsupported content.',
-  'API_ERROR_403':          '🔑 Invalid API Key — verify your VITE_GROQ_API_KEY is correct.',
+  'API_ERROR_403':          '🔑 Invalid API Key — verify your VITE_GEMINI_API_KEY is correct.',
   'API_ERROR_503':          '🔄 AI is temporarily overloaded — please try again shortly.',
   'TIMEOUT':                '⏱️ Request timed out — please try again.',
 };
@@ -59,7 +59,7 @@ export function useGeminiAnalysis() {
       const msg = err.message || '';
       if (msg.startsWith('API_ERROR_429')) {
         const detail = msg.replace('API_ERROR_429', '').replace(/^:\s*/, '').trim();
-        setError(`⏳ Rate limited. ${detail ? `Groq says: "${detail}"` : 'Please wait a moment and try again.'}`);
+        setError(`⏳ Rate limited. ${detail ? `Gemini says: "${detail}"` : 'Please wait a moment and try again.'}`);
       } else {
         const prefix = Object.keys(ERROR_MESSAGES).find(k => msg.startsWith(k));
         if (prefix) {

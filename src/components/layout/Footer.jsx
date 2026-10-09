@@ -12,7 +12,7 @@ export default function Footer() {
           </div>
 
           <div className="flex items-center gap-4">
-            <span className="text-sm text-[#a1a1aa] hover:text-[#ededed] transition-colors cursor-pointer">Powered by Groq</span>
+            <span className="text-sm text-[#a1a1aa] hover:text-[#ededed] transition-colors cursor-pointer">Powered by Gemini</span>
             <div className="w-1 h-1 rounded-full bg-[rgba(255,255,255,0.2)]"></div>
             <span className="text-sm text-[#a1a1aa] hover:text-[#ededed] transition-colors cursor-pointer">Client-Side Analysis</span>
           </div>

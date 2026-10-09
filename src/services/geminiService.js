@@ -1,6 +1,7 @@
-const API_KEY = import.meta.env.VITE_GROQ_API_KEY;
-const URL = 'https://api.groq.com/openai/v1/chat/completions';
-const MODEL_NAME = 'llama-3.3-70b-versatile';
+import { GoogleGenerativeAI } from '@google/generative-ai';
+
+const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+const MODEL_NAME = 'gemini-3.1-flash-lite';
 
 const SYSTEM_PROMPT = `You are a Senior SOC (Security Operations Center) Analyst. Analyze the content and return ONLY a valid JSON object. No markdown, no code fences, no extra text — pure JSON only.
 
@@ -21,38 +22,25 @@ function sleep(ms) {
   return new Promise(r => setTimeout(r, ms));
 }
 
-async function callGroq(prompt) {
-  const body = {
+async function callGemini(prompt) {
+  const genAI = new GoogleGenerativeAI(API_KEY);
+  const model = genAI.getGenerativeModel({ 
     model: MODEL_NAME,
-    messages: [
-      { role: 'system', content: SYSTEM_PROMPT },
-      { role: 'user', content: prompt }
-    ],
-    temperature: 0.1,
-    response_format: { type: 'json_object' }
-  };
-
-  const res = await fetch(URL, {
-    method: 'POST',
-    headers: { 
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${API_KEY}`
-    },
-    body: JSON.stringify(body),
+    systemInstruction: SYSTEM_PROMPT
   });
 
-  if (!res.ok) {
-    let detail = '';
-    try { detail = (await res.json())?.error?.message || ''; } catch { /* ignore */ }
-    const err = new Error(`HTTP_${res.status}: ${detail || res.statusText}`);
-    err.status = res.status;
-    throw err;
-  }
+  const generationConfig = {
+    temperature: 0.1,
+    responseMimeType: "application/json",
+  };
 
-  const data = await res.json();
-  const rawText = data?.choices?.[0]?.message?.content;
-  if (!rawText?.trim()) throw new Error('EMPTY_RESPONSE');
-  return rawText;
+  const result = await model.generateContent({
+    contents: [{ role: "user", parts: [{ text: prompt }] }],
+    generationConfig
+  });
+
+  const response = await result.response;
+  return response.text();
 }
 
 function parseAndValidate(rawText) {
@@ -87,31 +75,31 @@ function parseAndValidate(rawText) {
 }
 
 export async function analyzeContent(content, contentType, onRetry) {
-  if (!API_KEY || API_KEY === 'your_groq_api_key_here') {
-    throw new Error('GROQ_API_KEY_MISSING');
+  if (!API_KEY || API_KEY === 'your_gemini_api_key_here') {
+    throw new Error('GEMINI_API_KEY_MISSING');
   }
 
   const prompt = `CONTENT TYPE: ${contentType.toUpperCase()}\n\nANALYZE THIS CONTENT:\n---\n${content}\n---\n\nReturn ONLY the JSON object.`;
 
   let lastError = null;
-  const RETRY_DELAYS = [2000, 4000]; // Groq is fast, short retries
+  const RETRY_DELAYS = [2000, 4000]; 
 
   for (let attempt = 0; attempt <= RETRY_DELAYS.length; attempt++) {
     try {
-      console.log(`[Sentinel AI] Calling Groq (attempt ${attempt + 1})`);
-      const rawText = await callGroq(prompt);
-      console.log(`[Sentinel AI] ✅ Success with Groq`);
+      console.log(`[Sentinel AI] Calling Gemini (attempt ${attempt + 1})`);
+      const rawText = await callGemini(prompt);
+      console.log(`[Sentinel AI] ✅ Success with Gemini`);
       return parseAndValidate(rawText);
 
     } catch (err) {
       lastError = err;
-      const status = err.status || 0;
+      const status = err.status || err.response?.status || 0;
       const msg = err.message || '';
 
-      console.warn(`[Sentinel AI] Groq attempt ${attempt + 1} failed:`, msg);
+      console.warn(`[Sentinel AI] Gemini attempt ${attempt + 1} failed:`, msg);
 
       // 429 Rate limit
-      if (status === 429 || msg.includes('429')) {
+      if (status === 429 || msg.includes('429') || msg.toLowerCase().includes('quota')) {
         if (attempt < RETRY_DELAYS.length) {
           const waitSec = RETRY_DELAYS[attempt] / 1000;
           console.warn(`[Sentinel AI] Rate limited. Waiting ${waitSec}s before retry...`);
@@ -122,10 +110,10 @@ export async function analyzeContent(content, contentType, onRetry) {
       }
 
       if (status === 400) throw new Error('API_ERROR_400');
-      if (status === 401 || status === 403) throw new Error('API_ERROR_403');
+      if (status === 401 || status === 403 || msg.includes('API key not valid')) throw new Error('API_ERROR_403');
       if (status === 503 || status === 500) throw new Error('API_ERROR_503');
 
-      const known = ['GROQ_API_KEY_MISSING','EMPTY_RESPONSE','PARSE_ERROR','INVALID_SCHEMA'];
+      const known = ['GEMINI_API_KEY_MISSING','EMPTY_RESPONSE','PARSE_ERROR','INVALID_SCHEMA'];
       if (known.some(p => msg.startsWith(p))) throw err;
 
       throw new Error(`UNKNOWN: ${msg}`);

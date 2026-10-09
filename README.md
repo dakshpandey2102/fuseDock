@@ -6,7 +6,7 @@
   ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
   ![Vite](https://img.shields.io/badge/Vite-B73BFE?style=for-the-badge&logo=vite&logoColor=FFD62E)
   ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
-  ![Groq](https://img.shields.io/badge/Groq-f55036?style=for-the-badge&logo=groq&logoColor=white)
+  ![Gemini](https://img.shields.io/badge/Gemini-8E75B2?style=for-the-badge&logo=googlegemini&logoColor=white)
   ![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)
 </div>
 
@@ -42,7 +42,7 @@ FuseDock is a blazing-fast, frontend-only cybersecurity triage workspace designe
 
 Security analysts are overwhelmed by alert fatigue and the manual process of parsing through suspicious artifacts. **FuseDock** solves this by:
 - Eliminating the need for complex backend integrations for threat triage.
-- Providing near-instantaneous analysis utilizing Llama 3 via Groq's high-speed inference.
+- Providing near-instantaneous analysis utilizing Gemini via Google's high-speed inference.
 - Structuring raw, unstructured threat data into a guaranteed, predictable JSON schema.
 - Keeping analysis 100% client-side, ensuring that sensitive data isn't stored in persistent databases.
 
@@ -52,11 +52,11 @@ Security analysts are overwhelmed by alert fatigue and the manual process of par
 
 | Feature | Description |
 | :--- | :--- |
-| **⚡ Ultra-Fast Inference** | Powered by Groq's LPU architecture, delivering real-time AI threat analysis. |
+| **⚡ Ultra-Fast Inference** | Powered by Google Gemini, delivering real-time AI threat analysis. |
 | **🎯 Structured Data** | AI output is strictly engineered to return precise JSON schemas. |
 | **🎨 Premium UI/UX** | Dark-mode, glassmorphism dashboard inspired by enterprise SOC tools. |
 | **📊 Threat Metrics** | Generates 0-10 severity scores, MITRE ATT&CK mapping, and IOC extraction. |
-| **🔒 100% Client-Side** | Zero backend or database; analysis occurs purely between the browser and Groq API. |
+| **🔒 100% Client-Side** | Zero backend or database; analysis occurs purely between the browser and Gemini API. |
 
 ---
 
@@ -66,12 +66,12 @@ Security analysts are overwhelmed by alert fatigue and the manual process of par
 sequenceDiagram
     participant User
     participant FuseDock UI
-    participant Groq API (Llama 3)
+    participant Gemini API
     
     User->>FuseDock UI: Pastes Suspicious Payload
     FuseDock UI->>FuseDock UI: Formats payload & System Prompt
-    FuseDock UI->>Groq API (Llama 3): POST /chat/completions (Strict JSON Mode)
-    Groq API (Llama 3)-->>FuseDock UI: Returns structured JSON Threat Assessment
+    FuseDock UI->>Gemini API: generateContent (Strict JSON Mode)
+    Gemini API-->>FuseDock UI: Returns structured JSON Threat Assessment
     FuseDock UI->>User: Renders Metrics, IOCs, and MITRE Mapping
 ```
 
@@ -84,7 +84,7 @@ FuseDock is built with a modern, lightweight, and performant stack:
 - **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
 - **Animation**: [Framer Motion](https://www.framer.com/motion/)
 - **Icons**: [Lucide React](https://lucide.dev/)
-- **Intelligence**: [Groq API](https://console.groq.com/) (Llama 3.3 70B Versatile)
+- **Intelligence**: [Gemini API](https://aistudio.google.com/) (Gemini 3.1 Flash Lite)
 
 ---
 
@@ -93,7 +93,7 @@ FuseDock is built with a modern, lightweight, and performant stack:
 ### Prerequisites
 
 - [Node.js](https://nodejs.org/) installed
-- A free API key from [Groq](https://console.groq.com/keys)
+- A free API key from [Google AI Studio](https://aistudio.google.com/app/apikey)
 
 ### Installation
 
@@ -111,7 +111,7 @@ FuseDock is built with a modern, lightweight, and performant stack:
 3. **Configure Environment Variables**
    Create a `.env` file in the root of the project and add your Groq API key:
    ```env
-   VITE_GROQ_API_KEY=gsk_your_groq_api_key_here
+   VITE_GEMINI_API_KEY=your_gemini_api_key_here
    ```
 
 4. **Run the Development Server**
@@ -134,7 +134,7 @@ src/
 ├── hooks/
 │   └── useGeminiAnalysis.js  # Main AI orchestration & retry logic
 ├── services/
-│   └── geminiService.js      # Groq API integration (native fetch + backoff)
+│   └── geminiService.js      # Gemini API integration (native fetch + backoff)
 ├── utils/
 │   └── constants.js          # Static threat data and animations
 ├── App.jsx                   # Application shell
@@ -149,11 +149,11 @@ FuseDock is a static frontend application, making it effortlessly deployable:
 
 1. Push your repository to GitHub.
 2. Import the project into a platform like [Vercel](https://vercel.com/) or Netlify.
-3. Add `VITE_GROQ_API_KEY` to the platform's Environment Variables.
+3. Add `VITE_GEMINI_API_KEY` to the platform's Environment Variables.
 4. Deploy.
 
 > [!WARNING]
-> Because the API call happens in the browser, your Groq API key is exposed in the client bundle. For strict production environments, proxy the request through a serverless function.
+> Because the API call happens in the browser, your Gemini API key is exposed in the client bundle. For strict production environments, proxy the request through a serverless function.
 
 ---
 
